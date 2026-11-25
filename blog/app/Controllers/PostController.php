@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// Coordena a apresentação e a criação de postagens.
+// Coordena a apresentação, criação e edição de postagens.
 class PostController
 {
     // Recebe as dependências que acessam o banco e validam os dados.
@@ -29,6 +29,61 @@ class PostController
 
     public function show(): void
     {
+        $post = $this->findRequestedPost();
+        if ($post !== null) {
+            require __DIR__ . '/../Views/posts/show.php';
+        }
+    }
+
+    public function edit(): void
+    {
+        $post = $this->findRequestedPost();
+        if ($post !== null) {
+            // O formulário compartilhado recebe os dados atuais e o token da sessão.
+            $csrfToken = $_SESSION['csrf_token'];
+            require __DIR__ . '/../Views/posts/edit.php';
+        }
+    }
+
+    public function update(): void
+    {
+        // O token deve ser válido antes de consultar ou alterar a postagem.
+        $token = $_POST['csrf_token'] ?? null;
+        if (!is_string($token) || !hash_equals($_SESSION['csrf_token'], $token)) {
+            http_response_code(403);
+            echo 'Não foi possível validar o formulário.';
+            return;
+        }
+
+        $post = $this->findRequestedPost();
+        if ($post === null) {
+            return;
+        }
+
+        // Reutiliza as regras do cadastro e não grava dados inválidos.
+        $errors = $this->validator->validate($_POST);
+        if ($errors !== []) {
+            // Preserva apenas strings, evitando exibir tipos inesperados no formulário.
+            $values = [];
+            foreach (['titulo', 'conteudo', 'data_publicacao'] as $field) {
+                $values[$field] = isset($_POST[$field]) && is_string($_POST[$field]) ? $_POST[$field] : '';
+            }
+            $csrfToken = $_SESSION['csrf_token'];
+            http_response_code(422);
+            require __DIR__ . '/../Views/posts/edit.php';
+            return;
+        }
+
+        // Mantém o ID original, inclusive quando nenhum campo foi alterado.
+        $updatedPost = new Post($post->id, trim($_POST['titulo']), trim($_POST['conteudo']), $_POST['data_publicacao']);
+        $this->repository->update($updatedPost);
+        $_SESSION['flash_message'] = 'Postagem atualizada com sucesso.';
+        // Redireciona após a gravação para evitar o reenvio ao atualizar a página.
+        header('Location: ?action=index', true, 303);
+    }
+
+    private function findRequestedPost(): ?Post
+    {
         // Aceita apenas um identificador inteiro positivo dentro do intervalo do PHP.
         $rawId = $_GET['id'] ?? null;
         $id = is_string($rawId) && preg_match('/^[0-9]+$/D', $rawId)
@@ -40,10 +95,10 @@ class PostController
         if ($post === null) {
             http_response_code(404);
             require __DIR__ . '/../Views/errors/404.php';
-            return;
+            return null;
         }
 
-        require __DIR__ . '/../Views/posts/show.php';
+        return $post;
     }
 
     public function store(): void

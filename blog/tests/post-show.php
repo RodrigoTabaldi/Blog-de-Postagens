@@ -51,6 +51,7 @@ checkShow(str_contains($html, '&lt;Título&gt;') && str_contains($html, '01/01/1
 checkShow(str_contains($html, str_repeat('Conteúdo acentuado ', 20) . '<br />'), 'Conteúdo foi truncado ou perdeu a quebra de linha.');
 checkShow(str_contains($html, '&lt;script&gt;alert(1)&lt;/script&gt;'), 'HTML do conteúdo não foi escapado.');
 checkShow(str_contains($html, '?action=index'), 'Retorno à listagem ausente.');
+checkShow(str_contains($html, '?action=edit&amp;id=7'), 'Link para edição ausente.');
 
 // IDs inválidos não devem chegar ao repositório; um ID inexistente deve retornar 404.
 foreach ([null, '', '0', '-1', '1.5', '1x', ' 7', '7 ', '999999999999999999999999', ['7']] as $invalidId) {

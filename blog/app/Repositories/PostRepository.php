@@ -49,10 +49,12 @@ class PostRepository
 
     public function update(Post $post): void
     {
+        // Sem ID não há como identificar a postagem a ser alterada.
         if ($post->id === null) {
             throw new InvalidArgumentException('A postagem precisa de um ID para ser atualizada.');
         }
 
+        // Os valores são vinculados à consulta, sem montar SQL com dados recebidos.
         $statement = $this->connection->prepare(
             'UPDATE posts SET titulo = :titulo, conteudo = :conteudo, data_publicacao = :data_publicacao WHERE id = :id'
         );
