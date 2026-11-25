@@ -26,6 +26,7 @@ checkList(str_contains($empty, '?action=create'), 'Acesso à criação ausente.'
 
 $single = renderPostList([new Post(3, str_repeat('Título ', 40), '<b>Conteúdo</b>', '2026-01-01')]);
 checkList(substr_count($single, 'class="post-card"') === 1, 'Listagem de uma postagem incorreta.');
+checkList(str_contains($single, '?action=show&amp;id=3'), 'Link para leitura ausente.');
 checkList(str_contains($single, str_repeat('Título ', 40)), 'Título longo não foi apresentado integralmente.');
 checkList(str_contains($single, '&lt;b&gt;Conteúdo&lt;/b&gt;'), 'Conteúdo não foi escapado.');
 

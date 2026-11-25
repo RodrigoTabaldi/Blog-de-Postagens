@@ -22,6 +22,7 @@ class PostRepository
 
     public function findById(int $id): ?Post
     {
+        // Vincula o identificador como inteiro para manter a entrada fora do SQL.
         $statement = $this->connection->prepare(
             'SELECT id, titulo, conteudo, data_publicacao FROM posts WHERE id = :id'
         );

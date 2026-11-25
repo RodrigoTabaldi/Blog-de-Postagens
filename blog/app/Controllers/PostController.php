@@ -27,6 +27,25 @@ class PostController
         require __DIR__ . '/../Views/posts/create.php';
     }
 
+    public function show(): void
+    {
+        // Aceita apenas um identificador inteiro positivo dentro do intervalo do PHP.
+        $rawId = $_GET['id'] ?? null;
+        $id = is_string($rawId) && preg_match('/^[0-9]+$/D', $rawId)
+            ? filter_var($rawId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]])
+            : false;
+
+        // IDs inválidos e registros ausentes recebem a mesma resposta.
+        $post = $id === false ? null : $this->repository->findById($id);
+        if ($post === null) {
+            http_response_code(404);
+            require __DIR__ . '/../Views/errors/404.php';
+            return;
+        }
+
+        require __DIR__ . '/../Views/posts/show.php';
+    }
+
     public function store(): void
     {
         // Recusa o envio quando o token não corresponde ao da sessão.

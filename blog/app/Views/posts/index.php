@@ -24,7 +24,7 @@ require __DIR__ . '/../layouts/header.php';
                 <?php // A data do banco já está no formato ISO, sem conversão de fuso horário. ?>
                 <time datetime="<?= htmlspecialchars($post->dataPublicacao, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars(implode('/', array_reverse(explode('-', $post->dataPublicacao))), ENT_QUOTES, 'UTF-8') ?></time>
                 <?php // O conteúdo cadastrado é exibido como texto, sem interpretar HTML. ?>
-                <h2><?= htmlspecialchars($post->titulo, ENT_QUOTES, 'UTF-8') ?></h2>
+                <h2><a href="?action=show&amp;id=<?= (int) $post->id ?>"><?= htmlspecialchars($post->titulo, ENT_QUOTES, 'UTF-8') ?></a></h2>
                 <p><?= htmlspecialchars($excerpt, ENT_QUOTES, 'UTF-8') ?></p>
             </article>
         <?php endforeach; ?>
