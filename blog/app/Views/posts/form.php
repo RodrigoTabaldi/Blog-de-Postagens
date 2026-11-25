@@ -11,7 +11,7 @@ $errors = $errors ?? [];
 <?php if (!isset($csrfToken)): ?>
     <div class="alert alert-danger" role="alert">O formulário está indisponível. Tente novamente mais tarde.</div>
 <?php else: ?>
-<form class="post-form" action="<?= htmlspecialchars($formAction, ENT_QUOTES, 'UTF-8') ?>" method="post">
+<form class="post-form" action="<?= htmlspecialchars($formAction, ENT_QUOTES, 'UTF-8') ?>" method="post" data-post-form>
     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
     <?php foreach (['titulo' => 'Título', 'conteudo' => 'Conteúdo', 'data_publicacao' => 'Data de publicação'] as $field => $label): ?>
         <div class="form-field">
