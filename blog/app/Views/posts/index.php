@@ -1,5 +1,5 @@
 <?php
-// Espera $posts como uma lista de objetos Post.
+// Recebe as postagens, o termo pesquisado e o token usado nas exclusões.
 $pageTitle = 'Postagens';
 require __DIR__ . '/../layouts/header.php';
 ?>
@@ -8,12 +8,27 @@ require __DIR__ . '/../layouts/header.php';
     <h1>Postagens</h1>
     <p class="lead-text">Explore as publicações e compartilhe suas ideias.</p>
 </section>
-<?php // Apresenta um convite à criação quando o banco não possui postagens. ?>
+<?php // O formulário usa GET para que a busca possa ser compartilhada pela URL. ?>
+<form class="search-form" action="" method="get" role="search">
+    <input type="hidden" name="action" value="index">
+    <label class="form-label" for="q">Buscar postagens</label>
+    <div class="search-controls">
+        <input class="form-control" id="q" name="q" type="search" value="<?= htmlspecialchars($searchTerm, ENT_QUOTES, 'UTF-8') ?>" placeholder="Pesquise por título ou conteúdo">
+        <button class="btn btn-primary" type="submit">Buscar</button>
+        <?php if ($searchTerm !== ''): ?><a class="btn btn-outline-secondary" href="?action=index">Limpar</a><?php endif; ?>
+    </div>
+</form>
+<?php // Distingue uma busca sem resultados de uma listagem sem postagens. ?>
 <?php if ($posts === []): ?>
     <div class="empty-state">
-        <h2>Ainda não há postagens</h2>
-        <p>Comece compartilhando sua primeira ideia.</p>
-        <a class="btn btn-primary" href="?action=create">Criar postagem</a>
+        <?php if ($searchTerm !== ''): ?>
+            <h2>Nenhuma postagem encontrada</h2>
+            <p>Tente pesquisar por outro termo.</p>
+        <?php else: ?>
+            <h2>Ainda não há postagens</h2>
+            <p>Comece compartilhando sua primeira ideia.</p>
+            <a class="btn btn-primary" href="?action=create">Criar postagem</a>
+        <?php endif; ?>
     </div>
 <?php else: ?>
     <div class="post-grid">

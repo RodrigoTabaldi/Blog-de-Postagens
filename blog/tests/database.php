@@ -37,6 +37,14 @@ try {
     check(count($repository->search("$marker 100%_!")) === 1, 'Busca literal falhou.');
     check(count($repository->search(' ')) === count($repository->findAll()), 'Busca vazia falhou.');
 
+    // Usa marcadores únicos para verificar título, conteúdo, curingas literais e ordenação.
+    $firstId = $repository->create(new Post(null, "$marker título único", "$marker conteúdo especial", '2026-03-01'));
+    $secondId = $repository->create(new Post(null, "$marker título único", "$marker outra descrição", '2026-03-01'));
+    $titleResults = $repository->search("$marker título ún");
+    check(count($titleResults) === 2 && $titleResults[0]->id === $secondId && $titleResults[1]->id === $firstId, 'Busca no título ou ordenação por ID falhou.');
+    check(count($repository->search("$marker conteúdo especial")) === 1, 'Busca no conteúdo falhou.');
+    check(count($repository->search("$marker inexistente")) === 0, 'Busca sem resultados falhou.');
+
     $post->titulo = "$marker atualizado";
     $post->dataPublicacao = '2026-02-02';
     $repository->update($post);

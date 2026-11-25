@@ -12,8 +12,17 @@ class PostController
 
     public function index(): void
     {
-        // Busca todas as postagens na ordem definida pelo repositório.
-        $posts = $this->repository->findAll();
+        // Rejeita parâmetros em formato inesperado antes de consultar o banco.
+        $query = $_GET['q'] ?? '';
+        if (!is_string($query) || !mb_check_encoding($query, 'UTF-8')) {
+            http_response_code(400);
+            echo 'Informe um termo de busca válido.';
+            return;
+        }
+
+        // Um termo vazio exibe tudo; os demais são pesquisados no banco.
+        $searchTerm = trim($query);
+        $posts = $searchTerm === '' ? $this->repository->findAll() : $this->repository->search($searchTerm);
         $csrfToken = $_SESSION['csrf_token'];
         // A mensagem de sucesso é exibida apenas uma vez após o redirecionamento.
         $flashMessage = $_SESSION['flash_message'] ?? null;

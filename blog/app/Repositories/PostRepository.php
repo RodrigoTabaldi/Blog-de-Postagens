@@ -84,11 +84,13 @@ class PostRepository
             return $this->findAll();
         }
 
-        // Trata os curingas do LIKE como texto digitado, mantendo a busca parcial.
+        // Escapa primeiro o próprio caractere de escape e depois os curingas do LIKE.
+        // Os '%' externos permitem encontrar o termo em qualquer parte do texto.
         $pattern = '%' . str_replace(['!', '%', '_'], ['!!', '!%', '!_'], $term) . '%';
         $statement = $this->connection->prepare(
             "SELECT id, titulo, conteudo, data_publicacao FROM posts WHERE titulo LIKE :titulo ESCAPE '!' OR conteudo LIKE :conteudo ESCAPE '!' ORDER BY data_publicacao DESC, id DESC"
         );
+        // Parâmetros distintos permitem prepared statements nativos no MySQL.
         $statement->execute([':titulo' => $pattern, ':conteudo' => $pattern]);
 
         return array_map([$this, 'toPost'], $statement->fetchAll());

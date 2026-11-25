@@ -8,6 +8,7 @@ function renderPostList(array $posts): string
 {
     // Captura o HTML para verificar a view sem iniciar um servidor web.
     $csrfToken = 'token-de-teste';
+    $searchTerm = '';
     ob_start();
     require __DIR__ . '/../app/Views/posts/index.php';
     return ob_get_clean();
