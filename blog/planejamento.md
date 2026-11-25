@@ -4,14 +4,16 @@ Aplicação web para criação, edição, exclusão, listagem e busca de postage
 
 **Stack:** PHP 8.4, MySQL, PDO, HTML, CSS, Bootstrap 5 e JavaScript.
 
+Os itens marcados indicam implementação ou revisão concluída no código. As validações com MySQL real e os testes de aceitação continuam pendentes onde indicados.
+
 ## 01. Estrutura do projeto
 
-- [ ] Organizar a aplicação em MVC, com o acesso ao banco separado dos controllers e das páginas.
-- [ ] Centralizar as requisições em `public/index.php`.
-- [ ] Configurar o carregamento das classes e o roteamento por `action`.
-- [ ] Reutilizar cabeçalho, rodapé e formulário de postagem.
-- [ ] Manter as configurações do banco fora de `public/` e ignorar credenciais locais no Git.
-- [ ] Tratar rotas inexistentes e métodos HTTP não permitidos.
+- [x] Organizar a aplicação em MVC, com o acesso ao banco separado dos controllers e das páginas.
+- [x] Centralizar as requisições em `public/index.php`.
+- [x] Configurar o carregamento das classes e o roteamento por `action`.
+- [x] Reutilizar cabeçalho, rodapé e formulário de postagem.
+- [x] Manter as configurações do banco fora de `public/` e ignorar credenciais locais no Git.
+- [x] Tratar rotas inexistentes e métodos HTTP não permitidos.
 
 Estrutura prevista:
 
@@ -68,9 +70,9 @@ O controller recebe as requisições, o validator verifica os dados e o reposito
 
 ## 02. Banco de dados
 
-- [ ] Criar o banco `blog` e a tabela `posts` em `database/schema.sql`.
-- [ ] Utilizar InnoDB e `utf8mb4` para armazenamento de textos acentuados.
-- [ ] Criar `database/seed.sql` com algumas postagens para demonstração, de importação opcional.
+- [x] Criar o banco `blog` e a tabela `posts` em `database/schema.sql`.
+- [x] Utilizar InnoDB e `utf8mb4` para armazenamento de textos acentuados.
+- [x] Criar `database/seed.sql` com algumas postagens para demonstração, de importação opcional.
 - [ ] Verificar a execução do schema em um banco vazio.
 
 ### Tabela `posts`
@@ -103,23 +105,23 @@ A data será armazenada em `YYYY-MM-DD` e exibida em `DD/MM/YYYY`. O identificad
 
 Arquivos: `Connection.php`, `Post.php`, `PostRepository.php` e `config/database.example.php`.
 
-- [ ] Implementar conexão PDO com host, porta, banco, usuário, senha e charset configuráveis.
-- [ ] Configurar `PDO::ATTR_ERRMODE` como `PDO::ERRMODE_EXCEPTION`, `PDO::ATTR_DEFAULT_FETCH_MODE` como `PDO::FETCH_ASSOC` e desabilitar emulação de prepared statements.
-- [ ] Definir o modelo `Post` com os quatro campos da tabela.
-- [ ] Preparar o repository, implementando os métodos conforme as respectivas funcionalidades.
-- [ ] Utilizar parâmetros vinculados em todas as consultas que recebem entradas externas.
+- [x] Implementar conexão PDO com host, porta, banco, usuário, senha e charset configuráveis.
+- [x] Configurar `PDO::ATTR_ERRMODE` como `PDO::ERRMODE_EXCEPTION`, `PDO::ATTR_DEFAULT_FETCH_MODE` como `PDO::FETCH_ASSOC` e desabilitar emulação de prepared statements.
+- [x] Definir o modelo `Post` com os quatro campos da tabela.
+- [x] Preparar o repository, implementando os métodos conforme as respectivas funcionalidades.
+- [x] Utilizar parâmetros vinculados em todas as consultas que recebem entradas externas.
 - [ ] Validar a conexão e tratar indisponibilidade do banco sem exibir credenciais ou detalhes internos.
 
 Métodos previstos no repository: `findAll()`, `findById(int $id)`, `create()`, `update()`, `delete(int $id)` e `search(string $term)`.
 
 ## 04. Layout do blog
 
-- [ ] Criar um cabeçalho com o nome do blog e acesso à página inicial e à nova postagem.
-- [ ] Definir a identidade visual em `public/assets/css/style.css`, usando fundo claro, texto escuro, bordas discretas e tipografia legível.
-- [ ] Usar Bootstrap como base de responsividade, com estilos próprios para evitar uma aparência genérica.
-- [ ] Organizar a listagem em cards com título, data, trecho e ações.
-- [ ] Definir uma largura confortável para a leitura dos artigos e para os formulários.
-- [ ] Padronizar botões, mensagens de erro e sucesso, estados vazios e confirmação de exclusão.
+- [x] Criar um cabeçalho com o nome do blog e acesso à página inicial e à nova postagem.
+- [x] Definir a identidade visual em `public/assets/css/style.css`, usando fundo claro, texto escuro, bordas discretas e tipografia legível.
+- [x] Usar Bootstrap como base de responsividade, com estilos próprios para evitar uma aparência genérica.
+- [x] Organizar a listagem em cards com título, data, trecho e ações.
+- [x] Definir uma largura confortável para a leitura dos artigos e para os formulários.
+- [x] Padronizar botões, mensagens de erro e sucesso, estados vazios e confirmação de exclusão.
 - [ ] Garantir contraste, foco visível, labels nos campos e funcionamento em telas menores.
 
 A interface terá quatro páginas principais: listagem, leitura, criação e edição. A busca será integrada à listagem.
@@ -128,16 +130,16 @@ A interface terá quatro páginas principais: listagem, leitura, criação e edi
 
 Rotas: `GET /?action=create` e `POST /?action=store`.
 
-- [ ] Criar `create.php` e o formulário reutilizável `form.php`.
-- [ ] Implementar os campos `titulo` (input text), `conteudo` (textarea) e `data_publicacao` (input date).
-- [ ] Implementar `PostController::create()`, `PostController::store()` e `PostRepository::create()`.
-- [ ] Centralizar as regras de validação em `PostValidator.php`.
-- [ ] Validar título e conteúdo no JavaScript antes de enviar o formulário; repetir as validações no PHP.
-- [ ] Rejeitar campos vazios ou compostos apenas por espaços, título acima de 255 caracteres, conteúdo acima de 65.535 bytes e data inválida ou fora do intervalo suportado pelo MySQL.
-- [ ] Rejeitar parâmetros com tipos inesperados.
-- [ ] Gerar e verificar token CSRF no formulário POST.
-- [ ] Preservar os valores preenchidos quando houver erro e indicar o campo que precisa ser corrigido.
-- [ ] Salvar a postagem e redirecionar para a listagem após sucesso (Post/Redirect/Get), com mensagem de confirmação.
+- [x] Criar `create.php` e o formulário reutilizável `form.php`.
+- [x] Implementar os campos `titulo` (input text), `conteudo` (textarea) e `data_publicacao` (input date).
+- [x] Implementar `PostController::create()`, `PostController::store()` e `PostRepository::create()`.
+- [x] Centralizar as regras de validação em `PostValidator.php`.
+- [x] Validar título e conteúdo no JavaScript antes de enviar o formulário; repetir as validações no PHP.
+- [x] Rejeitar campos vazios ou compostos apenas por espaços, título acima de 255 caracteres, conteúdo acima de 65.535 bytes e data inválida ou fora do intervalo suportado pelo MySQL.
+- [x] Rejeitar parâmetros com tipos inesperados.
+- [x] Gerar e verificar token CSRF no formulário POST.
+- [x] Preservar os valores preenchidos quando houver erro e indicar o campo que precisa ser corrigido.
+- [x] Salvar a postagem e redirecionar para a listagem após sucesso (Post/Redirect/Get), com mensagem de confirmação.
 
 ```sql
 INSERT INTO posts (titulo, conteudo, data_publicacao)
@@ -150,14 +152,14 @@ Validação: cadastrar uma postagem válida, repetir com título e conteúdo vaz
 
 Rota: `GET /?action=index` (também disponível na raiz).
 
-- [ ] Implementar `PostController::index()` e `PostRepository::findAll()`.
-- [ ] Criar `app/Views/posts/index.php` e exibir todas as postagens.
-- [ ] Apresentar título, data e trecho de até 160 caracteres, sem cortar caracteres multibyte; adicionar reticências somente quando necessário.
-- [ ] Ordenar pela data de publicação decrescente e pelo ID em caso de empate.
-- [ ] Vincular o título à página individual da postagem (task 07).
-- [ ] Integrar as ações Editar e Excluir em cada card (tasks 08 e 09).
-- [ ] Exibir uma mensagem e acesso à criação quando não houver postagens.
-- [ ] Escapar dados dinâmicos antes da renderização HTML.
+- [x] Implementar `PostController::index()` e `PostRepository::findAll()`.
+- [x] Criar `app/Views/posts/index.php` e exibir todas as postagens.
+- [x] Apresentar título, data e trecho de até 160 caracteres, sem cortar caracteres multibyte; adicionar reticências somente quando necessário.
+- [x] Ordenar pela data de publicação decrescente e pelo ID em caso de empate.
+- [x] Vincular o título à página individual da postagem (task 07).
+- [x] Integrar as ações Editar e Excluir em cada card (tasks 08 e 09).
+- [x] Exibir uma mensagem e acesso à criação quando não houver postagens.
+- [x] Escapar dados dinâmicos antes da renderização HTML.
 
 ```sql
 SELECT id, titulo, conteudo, data_publicacao
@@ -171,12 +173,12 @@ Validação: conferir a listagem com zero, um e vários registros, incluindo tí
 
 Rota: `GET /?action=show&id={id}`.
 
-- [ ] Implementar `PostController::show()` e `PostRepository::findById(int $id)`.
-- [ ] Validar o ID como inteiro positivo e retornar HTTP 404 se a postagem não existir ou o identificador for inválido.
-- [ ] Criar `app/Views/posts/show.php`.
-- [ ] Exibir título, data e conteúdo completo, sem truncamento.
-- [ ] Preservar as quebras de linha e apresentar o conteúdo como texto, sem interpretar HTML fornecido pelo usuário.
-- [ ] Adicionar retorno à listagem e integrar as ações de edição e exclusão quando disponíveis.
+- [x] Implementar `PostController::show()` e `PostRepository::findById(int $id)`.
+- [x] Validar o ID como inteiro positivo e retornar HTTP 404 se a postagem não existir ou o identificador for inválido.
+- [x] Criar `app/Views/posts/show.php`.
+- [x] Exibir título, data e conteúdo completo, sem truncamento.
+- [x] Preservar as quebras de linha e apresentar o conteúdo como texto, sem interpretar HTML fornecido pelo usuário.
+- [x] Adicionar retorno à listagem e integrar as ações de edição e exclusão quando disponíveis.
 
 ```sql
 SELECT id, titulo, conteudo, data_publicacao
@@ -190,15 +192,15 @@ Validação: abrir a postagem pelo título na listagem, comparar o conteúdo com
 
 Rotas: `GET /?action=edit&id={id}` e `POST /?action=update&id={id}`.
 
-- [ ] Implementar `PostController::edit()`, `PostController::update()` e `PostRepository::update()`.
-- [ ] Criar `edit.php`, reutilizando `form.php` com os dados atuais da postagem.
-- [ ] Permitir alteração de título, conteúdo e data de publicação, mantendo o ID original.
-- [ ] Reutilizar as validações PHP e JavaScript da criação.
-- [ ] Verificar a existência do registro e validar o token CSRF antes de atualizar.
-- [ ] Tratar entradas inválidas sem sobrescrever os dados existentes.
-- [ ] Permitir salvar sem alterações e cancelar a edição.
-- [ ] Adicionar a opção Editar em cada postagem da listagem.
-- [ ] Redirecionar após sucesso e apresentar mensagem de confirmação.
+- [x] Implementar `PostController::edit()`, `PostController::update()` e `PostRepository::update()`.
+- [x] Criar `edit.php`, reutilizando `form.php` com os dados atuais da postagem.
+- [x] Permitir alteração de título, conteúdo e data de publicação, mantendo o ID original.
+- [x] Reutilizar as validações PHP e JavaScript da criação.
+- [x] Verificar a existência do registro e validar o token CSRF antes de atualizar.
+- [x] Tratar entradas inválidas sem sobrescrever os dados existentes.
+- [x] Permitir salvar sem alterações e cancelar a edição.
+- [x] Adicionar a opção Editar em cada postagem da listagem.
+- [x] Redirecionar após sucesso e apresentar mensagem de confirmação.
 
 ```sql
 UPDATE posts
@@ -214,13 +216,13 @@ Validação: alterar os três campos, cancelar uma edição e enviar dados invá
 
 Rota: `POST /?action=delete&id={id}`.
 
-- [ ] Implementar `PostController::delete()` e `PostRepository::delete(int $id)`.
-- [ ] Disponibilizar a opção Excluir em cada postagem da listagem.
-- [ ] Implementar confirmação em JavaScript, identificando a postagem e permitindo cancelar a operação.
-- [ ] Validar ID, existência da postagem e token CSRF.
-- [ ] Impedir exclusões via GET.
-- [ ] Remover o registro do MySQL e redirecionar para a listagem com feedback.
-- [ ] Tratar a tentativa de excluir um registro inexistente.
+- [x] Implementar `PostController::delete()` e `PostRepository::delete(int $id)`.
+- [x] Disponibilizar a opção Excluir em cada postagem da listagem.
+- [x] Implementar confirmação em JavaScript, identificando a postagem e permitindo cancelar a operação.
+- [x] Validar ID, existência da postagem e token CSRF.
+- [x] Impedir exclusões via GET.
+- [x] Remover o registro do MySQL e redirecionar para a listagem com feedback.
+- [x] Tratar a tentativa de excluir um registro inexistente.
 
 ```sql
 DELETE FROM posts WHERE id = :id;
@@ -232,13 +234,13 @@ Validação: cancelar uma exclusão e confirmar que o registro permanece; confir
 
 Rota: `GET /?action=index&q={termo}`.
 
-- [ ] Criar formulário de pesquisa na página inicial.
-- [ ] Receber o parâmetro `q` no controller, validar seu tipo e remover espaços das extremidades.
-- [ ] Implementar `PostRepository::search(string $term)` com pesquisa parcial em `titulo` ou `conteudo`.
-- [ ] Vincular os dois parâmetros separadamente e escapar `%`, `_` e o próprio caractere de escape para que sejam pesquisados como texto literal.
-- [ ] Manter ordenação, título clicável e ações de edição e exclusão nos resultados.
-- [ ] Preservar o termo pesquisado e informar quando não houver correspondências.
-- [ ] Permitir limpar a pesquisa; um termo vazio deve retornar todas as postagens.
+- [x] Criar formulário de pesquisa na página inicial.
+- [x] Receber o parâmetro `q` no controller, validar seu tipo e remover espaços das extremidades.
+- [x] Implementar `PostRepository::search(string $term)` com pesquisa parcial em `titulo` ou `conteudo`.
+- [x] Vincular os dois parâmetros separadamente e escapar `%`, `_` e o próprio caractere de escape para que sejam pesquisados como texto literal.
+- [x] Manter ordenação, título clicável e ações de edição e exclusão nos resultados.
+- [x] Preservar o termo pesquisado e informar quando não houver correspondências.
+- [x] Permitir limpar a pesquisa; um termo vazio deve retornar todas as postagens.
 
 ```sql
 SELECT id, titulo, conteudo, data_publicacao
@@ -254,15 +256,17 @@ Validação: pesquisar uma palavra que apareça apenas no título, outra apenas 
 
 ## 11. Revisão de segurança e validações
 
-- [ ] Conferir o uso de prepared statements nas operações de leitura e escrita.
-- [ ] Revisar o escape de conteúdo, atributos HTML, valores dos formulários e termos de pesquisa com `htmlspecialchars()` e UTF-8.
-- [ ] Conferir a geração de tokens CSRF com `random_bytes()`, armazenamento em sessão e comparação com `hash_equals()`.
+- [x] Conferir o uso de prepared statements nas operações de leitura e escrita.
+- [x] Revisar o escape de conteúdo, atributos HTML, valores dos formulários e termos de pesquisa com `htmlspecialchars()` e UTF-8.
+- [x] Conferir a geração de tokens CSRF com `random_bytes()`, armazenamento em sessão e comparação com `hash_equals()`.
 - [ ] Confirmar que toda operação POST exige token válido e que dados inválidos não são persistidos.
 - [ ] Revisar os métodos HTTP e as respostas de erro: 403 para CSRF inválido, 404 para recurso inexistente, 405 para método não permitido, 422 para formulário inválido e 500 para erro interno.
 - [ ] Verificar se arquivos de configuração e credenciais estão protegidos, inclusive no histórico do Git.
 - [ ] Utilizar um usuário MySQL com os privilégios necessários à aplicação, sem permissões administrativas.
 
 Como não há autenticação, qualquer pessoa com acesso à aplicação pode gerenciar as postagens. As proteções acima não substituem um controle de acesso; a aplicação será destinada à execução local e avaliação do desafio.
+
+Revisão parcial: os testes de controller e HTTP disponíveis passaram, e os 13 commits acessíveis foram examinados por padrões comuns de credenciais, sem correspondências. Essa pesquisa não garante a ausência de todos os tipos de segredo. Permanecem pendentes a validação com MySQL, a conferência dos privilégios efetivos e a revisão completa do histórico. O procedimento está em `tests/seguranca.md`.
 
 ## 12. Testes de aceitação
 
@@ -296,10 +300,10 @@ Registrar os resultados dos testes em `tests/`, incluindo falhas encontradas e c
 
 ## 13. Revisão do código e da interface
 
-- [ ] Verificar sintaxe dos arquivos PHP com `php -l`.
+- [x] Verificar sintaxe dos arquivos PHP com `php -l`.
 - [ ] Revisar nomes, tipagem e responsabilidades das classes e métodos.
 - [ ] Remover duplicações, código não utilizado e logs de depuração.
-- [ ] Verificar se não existem consultas SQL nas views.
+- [x] Verificar se não existem consultas SQL nas views.
 - [ ] Revisar formulários, mensagens, links e ações de gerenciamento.
 - [ ] Testar a interface em celular, tablet e desktop, incluindo navegação por teclado.
 - [ ] Conferir o console do navegador e executar novamente os fluxos principais após as correções.
