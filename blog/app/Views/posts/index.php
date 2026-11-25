@@ -26,7 +26,10 @@ require __DIR__ . '/../layouts/header.php';
                 <?php // O conteúdo cadastrado é exibido como texto, sem interpretar HTML. ?>
                 <h2><a href="?action=show&amp;id=<?= (int) $post->id ?>"><?= htmlspecialchars($post->titulo, ENT_QUOTES, 'UTF-8') ?></a></h2>
                 <p><?= htmlspecialchars($excerpt, ENT_QUOTES, 'UTF-8') ?></p>
-                <div class="card-actions"><a href="?action=edit&amp;id=<?= (int) $post->id ?>">Editar</a></div>
+                <div class="card-actions">
+                    <a href="?action=edit&amp;id=<?= (int) $post->id ?>">Editar</a>
+                    <?php $deleteButtonClass = 'button-link danger-link'; require __DIR__ . '/delete-form.php'; ?>
+                </div>
             </article>
         <?php endforeach; ?>
     </div>

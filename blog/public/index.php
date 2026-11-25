@@ -15,7 +15,7 @@ $_SESSION['csrf_token'] ??= bin2hex(random_bytes(32));
 
 // Associa cada ação ao método HTTP permitido antes de acessar o banco.
 $action = $_GET['action'] ?? 'index';
-$routes = ['index' => 'GET', 'create' => 'GET', 'store' => 'POST', 'show' => 'GET', 'edit' => 'GET', 'update' => 'POST'];
+$routes = ['index' => 'GET', 'create' => 'GET', 'store' => 'POST', 'show' => 'GET', 'edit' => 'GET', 'update' => 'POST', 'delete' => 'POST'];
 if (!is_string($action) || !isset($routes[$action])) {
     http_response_code(404);
     echo 'Página não encontrada.';

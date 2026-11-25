@@ -12,6 +12,9 @@ require __DIR__ . '/../layouts/header.php';
     </header>
     <?php // Escapa o texto antes de converter as quebras de linha em elementos HTML. ?>
     <div class="article-content"><?= nl2br(htmlspecialchars($post->conteudo, ENT_QUOTES, 'UTF-8')) ?></div>
-    <div class="article-actions"><a class="btn btn-outline-primary" href="?action=edit&amp;id=<?= (int) $post->id ?>">Editar postagem</a></div>
+    <div class="article-actions">
+        <a class="btn btn-outline-primary" href="?action=edit&amp;id=<?= (int) $post->id ?>">Editar postagem</a>
+        <?php $deleteButtonClass = 'btn btn-outline-danger'; require __DIR__ . '/delete-form.php'; ?>
+    </div>
 </article>
 <?php require __DIR__ . '/../layouts/footer.php'; ?>

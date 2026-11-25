@@ -67,10 +67,12 @@ class PostRepository
 
     public function delete(int $id): bool
     {
+        // O ID é vinculado como inteiro; o retorno informa se houve exclusão.
         $statement = $this->connection->prepare('DELETE FROM posts WHERE id = :id');
         $statement->bindValue(':id', $id, PDO::PARAM_INT);
         $statement->execute();
 
+        // Zero linhas afetadas indica que a postagem já não estava no banco.
         return $statement->rowCount() > 0;
     }
 

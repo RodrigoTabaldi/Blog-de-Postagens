@@ -11,7 +11,7 @@ document.addEventListener('submit', (event) => {
             event.preventDefault();
         }
     }
-    // Mostra o título para que a pessoa confirme a postagem escolhida.
+    // A confirmação impede o envio ao cancelar; o servidor ainda valida o token.
     if (form.matches('[data-confirm-delete]')) {
         const title = form.dataset.postTitle;
         if (!window.confirm(`Deseja excluir a postagem "${title}"?`)) {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// Coordena a apresentação, criação e edição de postagens.
+// Coordena a apresentação e o gerenciamento de postagens.
 class PostController
 {
     // Recebe as dependências que acessam o banco e validam os dados.
@@ -14,6 +14,7 @@ class PostController
     {
         // Busca todas as postagens na ordem definida pelo repositório.
         $posts = $this->repository->findAll();
+        $csrfToken = $_SESSION['csrf_token'];
         // A mensagem de sucesso é exibida apenas uma vez após o redirecionamento.
         $flashMessage = $_SESSION['flash_message'] ?? null;
         unset($_SESSION['flash_message']);
@@ -31,6 +32,7 @@ class PostController
     {
         $post = $this->findRequestedPost();
         if ($post !== null) {
+            $csrfToken = $_SESSION['csrf_token'];
             require __DIR__ . '/../Views/posts/show.php';
         }
     }
@@ -55,6 +57,7 @@ class PostController
             return;
         }
 
+        // A mesma verificação de ID e existência é usada pela leitura e pela edição.
         $post = $this->findRequestedPost();
         if ($post === null) {
             return;
@@ -79,6 +82,34 @@ class PostController
         $this->repository->update($updatedPost);
         $_SESSION['flash_message'] = 'Postagem atualizada com sucesso.';
         // Redireciona após a gravação para evitar o reenvio ao atualizar a página.
+        header('Location: ?action=index', true, 303);
+    }
+
+    public function delete(): void
+    {
+        // Bloqueia solicitações sem o token da sessão antes de acessar o registro.
+        $token = $_POST['csrf_token'] ?? null;
+        if (!is_string($token) || !hash_equals($_SESSION['csrf_token'], $token)) {
+            http_response_code(403);
+            echo 'Não foi possível validar o formulário.';
+            return;
+        }
+
+        $post = $this->findRequestedPost();
+        if ($post === null) {
+            return;
+        }
+
+        // Outra requisição pode ter removido a postagem após a consulta.
+        if (!$this->repository->delete($post->id)) {
+            http_response_code(404);
+            require __DIR__ . '/../Views/errors/404.php';
+            return;
+        }
+
+        // A listagem consome a mensagem uma única vez após o redirecionamento.
+        $_SESSION['flash_message'] = 'Postagem excluída com sucesso.';
+        // O código 303 transforma a próxima requisição em GET e evita repetir o POST.
         header('Location: ?action=index', true, 303);
     }
 

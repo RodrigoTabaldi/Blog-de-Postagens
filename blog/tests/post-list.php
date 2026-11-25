@@ -7,6 +7,7 @@ require __DIR__ . '/../app/Models/Post.php';
 function renderPostList(array $posts): string
 {
     // Captura o HTML para verificar a view sem iniciar um servidor web.
+    $csrfToken = 'token-de-teste';
     ob_start();
     require __DIR__ . '/../app/Views/posts/index.php';
     return ob_get_clean();
@@ -28,6 +29,7 @@ $single = renderPostList([new Post(3, str_repeat('Título ', 40), '<b>Conteúdo<
 checkList(substr_count($single, 'class="post-card"') === 1, 'Listagem de uma postagem incorreta.');
 checkList(str_contains($single, '?action=show&amp;id=3'), 'Link para leitura ausente.');
 checkList(str_contains($single, '?action=edit&amp;id=3'), 'Link para edição ausente.');
+checkList(str_contains($single, '?action=delete&amp;id=3') && str_contains($single, 'data-confirm-delete') && str_contains($single, 'token-de-teste'), 'Formulário de exclusão ausente.');
 checkList(str_contains($single, str_repeat('Título ', 40)), 'Título longo não foi apresentado integralmente.');
 checkList(str_contains($single, '&lt;b&gt;Conteúdo&lt;/b&gt;'), 'Conteúdo não foi escapado.');
 

@@ -41,6 +41,7 @@ function renderShow(PostController $controller, mixed $id): array
 }
 
 $content = str_repeat('Conteúdo acentuado ', 20) . "\n<script>alert(1)</script>";
+$_SESSION = ['csrf_token' => 'token-de-teste'];
 $repository = new PostShowRepository(new Post(7, '<Título>', $content, '1000-01-01'));
 $controller = new PostController($repository, new PostValidator());
 
@@ -52,6 +53,7 @@ checkShow(str_contains($html, str_repeat('Conteúdo acentuado ', 20) . '<br />')
 checkShow(str_contains($html, '&lt;script&gt;alert(1)&lt;/script&gt;'), 'HTML do conteúdo não foi escapado.');
 checkShow(str_contains($html, '?action=index'), 'Retorno à listagem ausente.');
 checkShow(str_contains($html, '?action=edit&amp;id=7'), 'Link para edição ausente.');
+checkShow(str_contains($html, '?action=delete&amp;id=7') && str_contains($html, 'data-post-title="&lt;Título&gt;"'), 'Formulário de exclusão ausente ou título não escapado.');
 
 // IDs inválidos não devem chegar ao repositório; um ID inexistente deve retornar 404.
 foreach ([null, '', '0', '-1', '1.5', '1x', ' 7', '7 ', '999999999999999999999999', ['7']] as $invalidId) {
