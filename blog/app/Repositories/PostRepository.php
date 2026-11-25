@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+// Concentra as consultas de postagens e converte os resultados em objetos Post.
 class PostRepository
 {
     public function __construct(private PDO $connection)
@@ -77,6 +78,7 @@ class PostRepository
             return $this->findAll();
         }
 
+        // Trata os curingas do LIKE como texto digitado, mantendo a busca parcial.
         $pattern = '%' . str_replace(['!', '%', '_'], ['!!', '!%', '!_'], $term) . '%';
         $statement = $this->connection->prepare(
             "SELECT id, titulo, conteudo, data_publicacao FROM posts WHERE titulo LIKE :titulo ESCAPE '!' OR conteudo LIKE :conteudo ESCAPE '!' ORDER BY data_publicacao DESC, id DESC"

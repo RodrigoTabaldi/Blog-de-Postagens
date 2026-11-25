@@ -1,3 +1,4 @@
+-- Dados opcionais de demonstração; executar novamente cria postagens duplicadas.
 USE blog;
 
 INSERT INTO posts (titulo, conteudo, data_publicacao) VALUES

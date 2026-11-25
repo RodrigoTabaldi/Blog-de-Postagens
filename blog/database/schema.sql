@@ -1,9 +1,11 @@
+-- Cria o banco com suporte a textos acentuados e outros caracteres Unicode.
 CREATE DATABASE IF NOT EXISTS blog
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_unicode_ci;
 
 USE blog;
 
+-- O identificador é gerado pelo banco a cada nova postagem.
 CREATE TABLE IF NOT EXISTS posts (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(255) NOT NULL,

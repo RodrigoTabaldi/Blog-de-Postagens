@@ -18,6 +18,7 @@ function check(bool $condition, string $message): void
     }
 }
 
+// Execute com uma configuração apontando para um banco de teste separado.
 $config = require $argv[1];
 $pdo = Connection::create($config);
 check($pdo->getAttribute(PDO::ATTR_ERRMODE) === PDO::ERRMODE_EXCEPTION, 'Modo de erro incorreto.');
@@ -26,6 +27,7 @@ check(!$pdo->getAttribute(PDO::ATTR_EMULATE_PREPARES), 'Prepared statements emul
 
 $repository = new PostRepository($pdo);
 $marker = bin2hex(random_bytes(12));
+// Desfaz as alterações mesmo se alguma verificação falhar.
 $pdo->beginTransaction();
 try {
     $id = $repository->create(new Post(null, "$marker 100%_!", 'Conteúdo acentuado', '2026-01-01'));
@@ -47,6 +49,7 @@ try {
     $pdo->rollBack();
 }
 
+// As falhas de configuração e de conexão devem retornar mensagens seguras.
 try {
     Connection::create(array_replace($config, ['port' => 0]));
     throw new RuntimeException('Configuração inválida aceita.');
