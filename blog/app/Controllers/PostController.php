@@ -12,8 +12,9 @@ class PostController
 
     public function index(): void
     {
-        // A mensagem de sucesso é exibida apenas uma vez após o redirecionamento.
+        // Busca todas as postagens na ordem definida pelo repositório.
         $posts = $this->repository->findAll();
+        // A mensagem de sucesso é exibida apenas uma vez após o redirecionamento.
         $flashMessage = $_SESSION['flash_message'] ?? null;
         unset($_SESSION['flash_message']);
         require __DIR__ . '/../Views/posts/index.php';

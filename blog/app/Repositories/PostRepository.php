@@ -12,6 +12,7 @@ class PostRepository
     /** @return Post[] */
     public function findAll(): array
     {
+        // Publicações mais recentes aparecem primeiro; o ID desempata datas iguais.
         $statement = $this->connection->query(
             'SELECT id, titulo, conteudo, data_publicacao FROM posts ORDER BY data_publicacao DESC, id DESC'
         );
