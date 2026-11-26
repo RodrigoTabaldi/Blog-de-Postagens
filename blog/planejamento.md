@@ -49,7 +49,6 @@ blog/
 │       └── js/main.js
 ├── tests/
 ├── .gitignore
-├── README.md
 └── planejamento.md
 ```
 
@@ -318,11 +317,11 @@ Resultados e limitações da revisão em `tests/revisao-interface.md`.
 
 ## 14. Documentação e entrega
 
-- [ ] Finalizar `README.md` com descrição, funcionalidades, stack, pré-requisitos e instruções de execução local.
-- [ ] Documentar a criação do banco, importação do schema e configuração das credenciais locais; indicar que o seed é opcional.
-- [ ] Documentar as extensões PHP necessárias, incluindo `pdo_mysql` e `mbstring`.
-- [ ] Adicionar capturas reais da aplicação e uma breve descrição da arquitetura.
-- [ ] Testar a execução em outro diretório a partir de um clone limpo, seguindo apenas o README.
+- [x] Finalizar o `README.md` na raiz do repositório com descrição, funcionalidades, stack, pré-requisitos e instruções de execução local.
+- [x] Documentar a criação do banco, importação do schema e configuração das credenciais locais; indicar que o seed é opcional.
+- [x] Documentar as extensões PHP necessárias, incluindo `pdo_mysql` e `mbstring`.
+- [x] Adicionar capturas reais da aplicação e uma breve descrição da arquitetura.
+- [x] Testar a execução em outro diretório a partir de um clone limpo de uma cópia local da versão atual. O clone do GitHub deve ser conferido após a publicação das alterações.
 - [ ] Conferir os requisitos do desafio e a ausência de credenciais no repositório.
 - [ ] Publicar a versão final no GitHub e verificar o acesso do avaliador.
 - [ ] Enviar o link do repositório por e-mail.

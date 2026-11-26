@@ -1,4 +1,6 @@
 -- Dados opcionais de demonstração; executar novamente cria postagens duplicadas.
+-- Garante que o cliente interprete corretamente os acentos deste arquivo.
+SET NAMES utf8mb4;
 USE blog;
 
 INSERT INTO posts (titulo, conteudo, data_publicacao) VALUES
