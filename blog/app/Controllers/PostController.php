@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// Coordena a apresentação e o gerenciamento de postagens.
+// Coordena  a apresentação e o gerenciamento de postagens do blog.
 class PostController
 {
     // Recebe as dependências que acessam o banco e validam os dados.
@@ -50,7 +50,7 @@ class PostController
     {
         $post = $this->findRequestedPost();
         if ($post !== null) {
-            // O formulário compartilhado recebe os dados atuais e o token da sessão.
+            // O formulário compartilhado recebe os dados atuais e o token da sessão. 
             $csrfToken = $_SESSION['csrf_token'];
             require __DIR__ . '/../Views/posts/edit.php';
         }
