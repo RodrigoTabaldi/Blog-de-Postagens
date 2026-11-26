@@ -59,10 +59,7 @@ class PostController
     public function update(): void
     {
         // O token deve ser válido antes de consultar ou alterar a postagem.
-        $token = $_POST['csrf_token'] ?? null;
-        if (!is_string($token) || !hash_equals($_SESSION['csrf_token'], $token)) {
-            http_response_code(403);
-            echo 'Não foi possível validar o formulário.';
+        if (!$this->hasValidCsrfToken()) {
             return;
         }
 
@@ -76,10 +73,7 @@ class PostController
         $errors = $this->validator->validate($_POST);
         if ($errors !== []) {
             // Preserva apenas strings, evitando exibir tipos inesperados no formulário.
-            $values = [];
-            foreach (['titulo', 'conteudo', 'data_publicacao'] as $field) {
-                $values[$field] = isset($_POST[$field]) && is_string($_POST[$field]) ? $_POST[$field] : '';
-            }
+            $values = $this->formValues();
             $csrfToken = $_SESSION['csrf_token'];
             http_response_code(422);
             require __DIR__ . '/../Views/posts/edit.php';
@@ -97,10 +91,7 @@ class PostController
     public function delete(): void
     {
         // Bloqueia solicitações sem o token da sessão antes de acessar o registro.
-        $token = $_POST['csrf_token'] ?? null;
-        if (!is_string($token) || !hash_equals($_SESSION['csrf_token'], $token)) {
-            http_response_code(403);
-            echo 'Não foi possível validar o formulário.';
+        if (!$this->hasValidCsrfToken()) {
             return;
         }
 
@@ -144,10 +135,7 @@ class PostController
     public function store(): void
     {
         // Recusa o envio quando o token não corresponde ao da sessão.
-        $token = $_POST['csrf_token'] ?? null;
-        if (!is_string($token) || !hash_equals($_SESSION['csrf_token'], $token)) {
-            http_response_code(403);
-            echo 'Não foi possível validar o formulário.';
+        if (!$this->hasValidCsrfToken()) {
             return;
         }
 
@@ -155,10 +143,7 @@ class PostController
         $errors = $this->validator->validate($_POST);
         if ($errors !== []) {
             // Preserva apenas valores que podem ser exibidos com segurança no formulário.
-            $values = [];
-            foreach (['titulo', 'conteudo', 'data_publicacao'] as $field) {
-                $values[$field] = isset($_POST[$field]) && is_string($_POST[$field]) ? $_POST[$field] : '';
-            }
+            $values = $this->formValues();
             $csrfToken = $_SESSION['csrf_token'];
             http_response_code(422);
             require __DIR__ . '/../Views/posts/create.php';
@@ -171,5 +156,28 @@ class PostController
         $_SESSION['flash_message'] = 'Postagem criada com sucesso.';
         // Redireciona após o POST para evitar reenvio ao atualizar a página.
         header('Location: ?action=index', true, 303);
+    }
+
+    // Centraliza a mesma proteção para todas as operações que alteram dados.
+    private function hasValidCsrfToken(): bool
+    {
+        $token = $_POST['csrf_token'] ?? null;
+        if (is_string($token) && hash_equals($_SESSION['csrf_token'], $token)) {
+            return true;
+        }
+
+        http_response_code(403);
+        echo 'Não foi possível validar o formulário.';
+        return false;
+    }
+
+    // Devolve apenas texto para preencher novamente um formulário inválido.
+    private function formValues(): array
+    {
+        $values = [];
+        foreach (['titulo', 'conteudo', 'data_publicacao'] as $field) {
+            $values[$field] = isset($_POST[$field]) && is_string($_POST[$field]) ? $_POST[$field] : '';
+        }
+        return $values;
     }
 }

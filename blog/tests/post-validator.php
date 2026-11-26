@@ -11,6 +11,8 @@ $cases = [
     [$valid, []],
     [array_replace($valid, ['titulo' => '   ', 'conteudo' => "\t\n"]), ['titulo', 'conteudo']],
     [array_replace($valid, ['titulo' => str_repeat('á', 256)]), ['titulo']],
+    [array_replace($valid, ['titulo' => str_repeat('😀', 255)]), []],
+    [array_replace($valid, ['titulo' => str_repeat('😀', 256)]), ['titulo']],
     [array_replace($valid, ['conteudo' => str_repeat('a', 65536)]), ['conteudo']],
     [array_replace($valid, ['data_publicacao' => '2023-02-29']), ['data_publicacao']],
     [array_replace($valid, ['data_publicacao' => '0999-12-31']), ['data_publicacao']],

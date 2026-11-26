@@ -33,6 +33,8 @@ h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); letter-spacing: -.035em; }
 .form-label { font-weight: 600; }
 .form-control { border-color: #aabbb5; padding: .7rem .85rem; }
 .form-control:focus { border-color: var(--accent); box-shadow: 0 0 0 .2rem rgba(36, 91, 89, .18); }
+/* Sobrescreve o Bootstrap para manter o contorno visível ao navegar por teclado. */
+.btn:focus-visible, .form-control:focus-visible { outline: 3px solid #a55b16; outline-offset: 3px; }
 /* A grade ajusta a quantidade de cards à largura disponível. */
 .post-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 1.25rem; }
 .post-card, .empty-state, .post-form { background: var(--surface); border: 1px solid var(--line); border-radius: .75rem; padding: 1.75rem; }
@@ -45,6 +47,13 @@ h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); letter-spacing: -.035em; }
 .card-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--line); font-size: .95rem; font-weight: 600; }
 .button-link { border: 0; background: none; padding: 0; text-decoration: underline; font: inherit; }
 .danger-link { color: #a32332; }
+/* Uma leve mudança de posição confirma a interação sem atrasar a navegação. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .post-card { transition: transform 160ms ease; }
+    .post-card:hover { transform: translateY(-3px); }
+    .btn { transition: transform 160ms ease; }
+    .btn:hover { transform: translateY(-1px); }
+}
 .empty-state { text-align: center; padding: 3rem 1.5rem; }
 .empty-state h2 { font-size: 1.6rem; }
 /* Limita a largura de artigos e formulários para facilitar a leitura. */

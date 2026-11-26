@@ -12,7 +12,7 @@ $pageTitle = $pageTitle ?? 'Blog de Postagens';
     <link href="assets/css/style.css" rel="stylesheet">
 </head>
 <body>
-<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<a class="skip-link" href="#conteudo-principal">Pular para o conteúdo</a>
 <header class="site-header">
     <nav class="container site-nav" aria-label="Navegação principal">
         <a class="site-brand" href="?action=index">Blog de Postagens</a>
@@ -22,7 +22,7 @@ $pageTitle = $pageTitle ?? 'Blog de Postagens';
         </div>
     </nav>
 </header>
-<main id="conteudo" class="container site-main" tabindex="-1">
+<main id="conteudo-principal" class="container site-main" tabindex="-1">
     <?php if (!empty($flashMessage)): ?>
         <div class="alert <?= ($flashType ?? '') === 'error' ? 'alert-danger' : 'alert-success' ?>" role="<?= ($flashType ?? '') === 'error' ? 'alert' : 'status' ?>">
             <?= htmlspecialchars($flashMessage, ENT_QUOTES, 'UTF-8') ?>

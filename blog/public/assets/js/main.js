@@ -5,7 +5,9 @@ document.addEventListener('submit', (event) => {
         // A validação no servidor continua obrigatória mesmo com JavaScript ativo.
         for (const name of ['titulo', 'conteudo']) {
             const field = form.elements[name];
-            field.setCustomValidity(field.value.trim() ? '' : 'Preencha este campo.');
+            // Array.from conta caracteres Unicode, como a validação PHP, em vez de unidades UTF-16.
+            const tooLong = name === 'titulo' && Array.from(field.value).length > 255;
+            field.setCustomValidity(!field.value.trim() ? 'Preencha este campo.' : tooLong ? 'O título deve ter no máximo 255 caracteres.' : '');
         }
         if (!form.reportValidity()) {
             event.preventDefault();

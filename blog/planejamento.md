@@ -4,7 +4,7 @@ Aplicação web para criação, edição, exclusão, listagem e busca de postage
 
 **Stack:** PHP 8.4, MySQL, PDO, HTML, CSS, Bootstrap 5 e JavaScript.
 
-Os itens marcados indicam implementação ou revisão concluída no código. As validações com MySQL real e os testes de aceitação continuam pendentes onde indicados.
+Os itens marcados indicam implementação ou revisão concluída. A execução em MySQL isolado e os testes já realizados estão registrados em `tests/`; as verificações ainda incompletas permanecem abertas.
 
 ## 01. Estrutura do projeto
 
@@ -73,7 +73,7 @@ O controller recebe as requisições, o validator verifica os dados e o reposito
 - [x] Criar o banco `blog` e a tabela `posts` em `database/schema.sql`.
 - [x] Utilizar InnoDB e `utf8mb4` para armazenamento de textos acentuados.
 - [x] Criar `database/seed.sql` com algumas postagens para demonstração, de importação opcional.
-- [ ] Verificar a execução do schema em um banco vazio.
+- [x] Verificar a execução do schema em um banco vazio.
 
 ### Tabela `posts`
 
@@ -110,7 +110,7 @@ Arquivos: `Connection.php`, `Post.php`, `PostRepository.php` e `config/database.
 - [x] Definir o modelo `Post` com os quatro campos da tabela.
 - [x] Preparar o repository, implementando os métodos conforme as respectivas funcionalidades.
 - [x] Utilizar parâmetros vinculados em todas as consultas que recebem entradas externas.
-- [ ] Validar a conexão e tratar indisponibilidade do banco sem exibir credenciais ou detalhes internos.
+- [x] Validar a conexão e tratar indisponibilidade do banco sem exibir credenciais ou detalhes internos.
 
 Métodos previstos no repository: `findAll()`, `findById(int $id)`, `create()`, `update()`, `delete(int $id)` e `search(string $term)`.
 
@@ -122,7 +122,9 @@ Métodos previstos no repository: `findAll()`, `findById(int $id)`, `create()`, 
 - [x] Organizar a listagem em cards com título, data, trecho e ações.
 - [x] Definir uma largura confortável para a leitura dos artigos e para os formulários.
 - [x] Padronizar botões, mensagens de erro e sucesso, estados vazios e confirmação de exclusão.
-- [ ] Garantir contraste, foco visível, labels nos campos e funcionamento em telas menores.
+- [x] Associar os labels aos campos de criação e edição e verificar a correção no navegador.
+- [x] Verificar ausência de rolagem horizontal nas telas conferidas com largura de 320 px.
+- [ ] Verificar contraste, foco visível e funcionamento completo em diferentes tamanhos de tela.
 
 A interface terá quatro páginas principais: listagem, leitura, criação e edição. A busca será integrada à listagem.
 
@@ -259,14 +261,16 @@ Validação: pesquisar uma palavra que apareça apenas no título, outra apenas 
 - [x] Conferir o uso de prepared statements nas operações de leitura e escrita.
 - [x] Revisar o escape de conteúdo, atributos HTML, valores dos formulários e termos de pesquisa com `htmlspecialchars()` e UTF-8.
 - [x] Conferir a geração de tokens CSRF com `random_bytes()`, armazenamento em sessão e comparação com `hash_equals()`.
-- [ ] Confirmar que toda operação POST exige token válido e que dados inválidos não são persistidos.
-- [ ] Revisar os métodos HTTP e as respostas de erro: 403 para CSRF inválido, 404 para recurso inexistente, 405 para método não permitido, 422 para formulário inválido e 500 para erro interno.
-- [ ] Verificar se arquivos de configuração e credenciais estão protegidos, inclusive no histórico do Git.
-- [ ] Utilizar um usuário MySQL com os privilégios necessários à aplicação, sem permissões administrativas.
+- [x] Confirmar que toda operação POST exige token válido e que dados inválidos não são persistidos.
+- [x] Revisar os métodos HTTP e as respostas de erro: 403 para CSRF inválido, 404 para recurso inexistente, 405 para método não permitido, 422 para formulário inválido e 500 para erro interno.
+- [x] Confirmar que a configuração local é ignorada pelo Git e verificar alguns padrões de segredos no histórico acessível.
+- [ ] Completar a revisão de credenciais no histórico do Git com uma ferramenta dedicada.
+- [x] Verificar os privilégios mínimos da conta MySQL no ambiente de teste isolado.
+- [ ] Conferir os privilégios da conta MySQL utilizada no ambiente efetivo.
 
 Como não há autenticação, qualquer pessoa com acesso à aplicação pode gerenciar as postagens. As proteções acima não substituem um controle de acesso; a aplicação será destinada à execução local e avaliação do desafio.
 
-Revisão parcial: os testes de controller e HTTP disponíveis passaram, e os 13 commits acessíveis foram examinados por padrões comuns de credenciais, sem correspondências. Essa pesquisa não garante a ausência de todos os tipos de segredo. Permanecem pendentes a validação com MySQL, a conferência dos privilégios efetivos e a revisão completa do histórico. O procedimento está em `tests/seguranca.md`.
+Revisão parcial: os testes de controller e HTTP passaram também em MySQL isolado. A conta de teste teve seus privilégios verificados; a conta do ambiente efetivo ainda precisa ser conferida. Os 15 commits acessíveis foram pesquisados por alguns padrões de segredos, sem correspondências, mas isso não substitui uma revisão completa. Detalhes em `tests/seguranca.md`.
 
 ## 12. Testes de aceitação
 
@@ -295,18 +299,22 @@ Registrar os resultados dos testes em `tests/`, incluindo falhas encontradas e c
 | Conteúdo com HTML ou script | Apresentado como texto, sem execução |
 | Reiniciar aplicação | Dados permanecem no MySQL |
 
-- [ ] Executar todos os casos e conferir os registros diretamente no MySQL.
-- [ ] Corrigir as falhas identificadas e repetir os testes afetados.
+- [x] Executar os testes automatizados de aceitação e conferir os registros diretamente no MySQL isolado.
+- [x] Corrigir o rótulo do campo de conteúdo e repetir as verificações afetadas.
+- [ ] Concluir a verificação de todos os fluxos em navegador e em diferentes tamanhos de tela.
 
 ## 13. Revisão do código e da interface
 
 - [x] Verificar sintaxe dos arquivos PHP com `php -l`.
-- [ ] Revisar nomes, tipagem e responsabilidades das classes e métodos.
-- [ ] Remover duplicações, código não utilizado e logs de depuração.
+- [x] Revisar nomes, tipagem e responsabilidades das classes e métodos.
+- [x] Revisar duplicações, código não utilizado e logs de depuração; centralizar a validação CSRF e a recuperação dos valores do formulário.
 - [x] Verificar se não existem consultas SQL nas views.
-- [ ] Revisar formulários, mensagens, links e ações de gerenciamento.
-- [ ] Testar a interface em celular, tablet e desktop, incluindo navegação por teclado.
-- [ ] Conferir o console do navegador e executar novamente os fluxos principais após as correções.
+- [x] Revisar formulários, mensagens, links e ações de gerenciamento.
+- [x] Conferir layout nas larguras de 320, 768 e 1440 pixels e percorrer controles com Tab.
+- [x] Confirmar visualmente o indicador de foco por teclado em uma janela de navegador ativa.
+- [x] Conferir o console do navegador e executar novamente os fluxos principais após as correções.
+
+Resultados e limitações da revisão em `tests/revisao-interface.md`.
 
 ## 14. Documentação e entrega
 

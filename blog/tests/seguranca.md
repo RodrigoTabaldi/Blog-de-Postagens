@@ -9,3 +9,10 @@ Estas verificações precisam de um servidor MySQL configurado e de um banco de 
 5. Revise o histórico Git com uma ferramenta de detecção de segredos apropriada. A busca pontual por padrões comuns já realizada não substitui uma análise completa; trate qualquer valor encontrado como sensível e não o imprima nos registros de teste.
 
 Registre o resultado de cada verificação e marque os itens correspondentes do planejamento apenas após confirmá-los no ambiente efetivo.
+
+## Resultado em ambiente isolado — 25/11/2026
+
+- O schema original criou `blog.posts` em um servidor MySQL 26.10.0 inicializado vazio; a tabela tinha zero registros e usava InnoDB e `utf8mb4`.
+- Em `blog_test`, `tests/database.php` e `tests/aceitacao.php` passaram. As operações POST sem CSRF retornaram 403 sem alteração; entradas inválidas retornaram 422 sem persistência; recurso ausente retornou 404 e exclusão por GET retornou 405. Com o MySQL interrompido, a aplicação retornou 500 com mensagem genérica, sem dados da conexão.
+- `SHOW GRANTS FOR CURRENT_USER` mostrou somente `USAGE` global e `SELECT`, `INSERT`, `UPDATE`, `DELETE` em `blog_test.posts`; `CURRENT_ROLE()` retornou `NONE`. Isso comprova apenas os privilégios da conta temporária, não os da instalação efetiva.
+- `config/database.php` é ignorado pelo Git e não aparece no histórico acessível desse caminho. Uma busca nos 15 commits acessíveis por padrões específicos de chaves privadas, AWS, GitHub e OpenAI não encontrou correspondências. Essa busca limitada não garante ausência de outros segredos nem substitui um scanner dedicado.

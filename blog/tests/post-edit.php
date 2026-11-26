@@ -56,6 +56,8 @@ $valid = ['csrf_token' => 'token-de-teste', 'titulo' => ' Novo título ', 'conte
 [$status, $html] = requestEdit($controller, 'edit', '7');
 checkEdit($status === 200 && str_contains($html, 'value="Original"') && str_contains($html, 'Conteúdo original'), 'Dados atuais ausentes.');
 checkEdit(str_contains($html, '?action=update&amp;id=7') && str_contains($html, 'token-de-teste') && str_contains($html, 'Cancelar'), 'Formulário de edição incompleto.');
+// O rótulo deve apontar para o textarea, sem outro elemento com o mesmo ID.
+checkEdit(substr_count($html, 'id="conteudo"') === 1 && str_contains($html, 'for="conteudo"'), 'Rótulo de conteúdo não identifica um campo único.');
 
 // Uma falha de CSRF não pode consultar nem alterar a postagem.
 $lookups = $repository->lookups;

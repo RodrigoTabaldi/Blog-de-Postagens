@@ -70,18 +70,24 @@ try {
     assertAcceptance($status === 200 && preg_match('/name="csrf_token" value="([a-f0-9]{64})"/', $form, $tokenMatch) === 1, 'Formulário e token CSRF');
     $valid = ['csrf_token' => $tokenMatch[1], 'titulo' => "$marker título", 'conteudo' => "$marker conteúdo\n<script>alert(1)</script>", 'data_publicacao' => '2026-01-02'];
 
+    // Encontra qualquer tentativa desta execução, mesmo quando o título é inválido.
+    $countAttempts = $pdo->prepare('SELECT COUNT(*) FROM posts WHERE INSTR(titulo, :title_marker) > 0 OR INSTR(conteudo, :content_marker) > 0');
+    $countAttempts->execute([':title_marker' => $marker, ':content_marker' => $marker]);
+    assertAcceptance((int) $countAttempts->fetchColumn() === 0, 'Marcador de teste ainda não existe');
+
     // Envia os dados diretamente, como um navegador com JavaScript desativado.
     foreach ([['titulo' => '   '], ['conteudo' => ''], ['titulo' => str_repeat('a', 256)], ['data_publicacao' => '2026-02-30']] as $change) {
         [$status] = requestAcceptance($baseUrl . '/?action=store', 'POST', array_replace($valid, $change));
-        assertAcceptance($status === 422, 'Cadastro inválido rejeitado');
+        $countAttempts->execute([':title_marker' => $marker, ':content_marker' => $marker]);
+        assertAcceptance($status === 422 && (int) $countAttempts->fetchColumn() === 0, 'Cadastro inválido rejeitado sem persistência');
     }
     [$status] = requestAcceptance($baseUrl . '/?action=store', 'POST', array_diff_key($valid, ['csrf_token' => true]));
     assertAcceptance($status === 403, 'Cadastro sem CSRF rejeitado');
 
     // Localiza apenas registros com o marcador único criado por esta execução.
     $find = $pdo->prepare('SELECT id FROM posts WHERE titulo = :titulo');
-    $find->execute([':titulo' => $valid['titulo']]);
-    assertAcceptance($find->fetchAll() === [], 'Nenhum cadastro inválido persistido');
+    $countAttempts->execute([':title_marker' => $marker, ':content_marker' => $marker]);
+    assertAcceptance((int) $countAttempts->fetchColumn() === 0, 'Cadastro sem CSRF não foi persistido');
     [$status, , $headers] = requestAcceptance($baseUrl . '/?action=store', 'POST', $valid);
     $find->execute([':titulo' => $valid['titulo']]);
     $rows = $find->fetchAll();

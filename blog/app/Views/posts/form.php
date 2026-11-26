@@ -20,7 +20,7 @@ $errors = $errors ?? [];
             <?php if ($field === 'conteudo'): ?>
                 <textarea class="form-control" id="conteudo" name="conteudo" rows="10" required<?= $attributes ?>><?= htmlspecialchars($values[$field] ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
             <?php else: ?>
-                <input class="form-control" id="<?= $field ?>" name="<?= $field ?>" type="<?= $field === 'titulo' ? 'text' : 'date' ?>" value="<?= htmlspecialchars($values[$field] ?? '', ENT_QUOTES, 'UTF-8') ?>" <?= $field === 'titulo' ? 'maxlength="255"' : '' ?> required<?= $attributes ?>>
+                <input class="form-control" id="<?= $field ?>" name="<?= $field ?>" type="<?= $field === 'titulo' ? 'text' : 'date' ?>" value="<?= htmlspecialchars($values[$field] ?? '', ENT_QUOTES, 'UTF-8') ?>" required<?= $attributes ?>>
             <?php endif; ?>
             <?php if (!empty($errors[$field])): ?><p class="field-error" id="error-<?= $field ?>"><?= htmlspecialchars($errors[$field], ENT_QUOTES, 'UTF-8') ?></p><?php endif; ?>
         </div>
